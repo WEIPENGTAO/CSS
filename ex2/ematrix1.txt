@@ -1,0 +1,7 @@
+Thread_pnum = 8
+serial matrix multiply time: 59.139000
+parell_dynamic matrix multiply time: 15.195000
+parell_static matrix multiply time: 15.433000
+parell_guided matrix multiply time: 15.331000
+parell_runtime matrix multiply time: 16.293000
+parell_auto matrix multiply time: 17.250000
