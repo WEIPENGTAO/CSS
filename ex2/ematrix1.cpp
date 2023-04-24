@@ -22,9 +22,9 @@ void parell_auto();    // auto 调度并行计算函数
 
 int main()
 {
-    freopen("ematrix1.txt", "w", stdout); // 将输出重定向到文件中
+    // freopen("ematrix1.txt", "w", stdout); // 将输出重定向到文件中
 
-    clock_t start, end;
+    double start, end;
 
     int i, j, k;
     // srand((unsigned)time(NULL)); // 生成随机数种子
@@ -51,15 +51,16 @@ int main()
     parell_runtime(); // 调用 runtime 调度并行计算函数
     parell_auto();    // 调用 auto 调度并行计算函数
 
+    // system("pause");
     return 0;
 }
 
 void serial()
 {
-    clock_t start, end;
+    double start, end;
     int i, j, k;
 
-    start = clock(); // 记录串行计算开始时间
+    start = omp_get_wtime(); // 记录串行计算开始时间
     for (i = 0; i < m; i++)
     {
         for (j = 0; j < m; j++)
@@ -70,21 +71,19 @@ void serial()
             }
         }
     }
-    end = clock();                                                                           // 记录串行计算结束时间
-    printf("serial matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC); // 打印串行计算时间
+    end = omp_get_wtime();                                                                           // 记录串行计算结束时间
+    printf("serial matrix multiply time: %0.6lf\n", end - start); // 打印串行计算时间
 }
 
 // 进行 dynamic 调度并行计算
 void parell_dynamic()
 {
-    clock_t start, end;
+    double start, end;
     int i, j, k;
 
     // 获取开始时间
-    start = clock();
+    start = omp_get_wtime();
 
-// 使用OpenMP并行化矩阵乘法运算
-// parallel是并行执行的代码块，shared是共享变量，即所有线程共享变量，private是私有变量，即每个线程都有自己的变量副本
 #pragma omp parallel shared(a, b, c) private(j, k)
     {
 // 为了减小竞争，使用for循环并行化外层循环
@@ -105,20 +104,20 @@ void parell_dynamic()
     }
 
     // 获取结束时间
-    end = clock();
+    end = omp_get_wtime();
 
     // 打印 dynamic 并行化矩阵乘法的运行时间
-    printf("parell_dynamic matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
+    printf("parell_dynamic matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 static 调度并行计算
 void parell_static()
 {
-    clock_t start, end;
+    double start, end;
     int i, j, k;
 
     // 获取开始时间
-    start = clock();
+    start = omp_get_wtime();
 
 #pragma omp parallel shared(a, b, c) private(j, k)
     {
@@ -137,20 +136,20 @@ void parell_static()
     }
 
     // 获取结束时间
-    end = clock();
+    end = omp_get_wtime();
 
     // 打印 static 并行化矩阵乘法的运行时间
-    printf("parell_static matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
+    printf("parell_static matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 guided 调度并行计算
 void parell_guided()
 {
-    clock_t start, end;
+    double start, end;
     int i, j, k;
 
     // 获取开始时间
-    start = clock();
+    start = omp_get_wtime();
 
 #pragma omp parallel shared(a, b, c) private(j, k)
     {
@@ -169,20 +168,20 @@ void parell_guided()
     }
 
     // 获取结束时间
-    end = clock();
+    end = omp_get_wtime();
 
     // 打印 guided 并行化矩阵乘法的运行时间
-    printf("parell_guided matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
+    printf("parell_guided matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 auto 调度并行计算
 void parell_auto()
 {
-    clock_t start, end;
+    double start, end;
     int i, j, k;
 
     // 获取开始时间
-    start = clock();
+    start = omp_get_wtime();
 
 #pragma omp parallel shared(a, b, c) private(j, k)
     {
@@ -201,20 +200,20 @@ void parell_auto()
     }
 
     // 获取结束时间
-    end = clock();
+    end = omp_get_wtime();
 
     // 打印 auto 并行化矩阵乘法的运行时间
-    printf("parell_auto matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
+    printf("parell_auto matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 runtime 调度并行计算
 void parell_runtime()
 {
-    clock_t start, end;
+    double start, end;
     int i, j, k;
 
     // 获取开始时间
-    start = clock();
+    start = omp_get_wtime();
 
 #pragma omp parallel shared(a, b, c) private(j, k)
     {
@@ -233,8 +232,8 @@ void parell_runtime()
     }
 
     // 获取结束时间
-    end = clock();
+    end = omp_get_wtime();
 
     // 打印 runtime 并行化矩阵乘法的运行时间
-    printf("parell_runtime matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
+    printf("parell_runtime matrix multiply time: %0.6lf\n", end - start);
 }
