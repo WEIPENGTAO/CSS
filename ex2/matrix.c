@@ -13,7 +13,7 @@ float b[m][m]; // 矩阵B
 float c[m][m]; // 矩阵C
 
 void serial(); // 串行计算函数
-void parell(); // 并行计算函数
+void parallel(); // 并行计算函数
 
 int main()
 {
@@ -38,7 +38,7 @@ int main()
     fprintf(stderr, "Thread_pnum = %d\n", pnum); // 打印处理器核心数
 
     serial(); // 调用串行计算函数
-    parell(); // 调用并行计算函数
+    parallel(); // 调用并行计算函数
 
     getchar();
     return 0;
@@ -65,7 +65,7 @@ void serial()
 }
 
 // 进行矩阵乘法的并行实现
-void parell()
+void parallel()
 {
     clock_t start, end;
     int i, j, k;
@@ -98,5 +98,5 @@ void parell()
     end = clock();
 
     // 打印并行化矩阵乘法的运行时间
-    printf("parell matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
+    printf("parallel matrix multiply time: %0.6lf\n", ((double)end - start) / CLOCKS_PER_SEC);
 }

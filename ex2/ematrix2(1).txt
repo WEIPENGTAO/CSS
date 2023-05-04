@@ -1,7 +1,0 @@
-Thread_pnum = 8
-m = 256, matrix size: 0.000732 GB, serial matrix multiply time: 0.203000
-m = 256, matrix size: 0.000732 GB, parell matrix multiply time: 0.031000
-m = 1024, matrix size: 0.011719 GB, serial matrix multiply time: 8.857000
-m = 1024, matrix size: 0.011719 GB, parell matrix multiply time: 2.286000
-m = 4096, matrix size: 0.187500 GB, serial matrix multiply time: 1040.470000
-m = 4096, matrix size: 0.187500 GB, parell matrix multiply time: 250.385000

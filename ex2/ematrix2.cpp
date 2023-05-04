@@ -11,10 +11,10 @@
 #include <omp.h>
 
 void serial(int m, float **&a, float **&b, float **&c); // 串行计算函数
-void parell(int m, float **&a, float **&b, float **&c); // 并行计算函数
+void parallel(int m, float **&a, float **&b, float **&c); // 并行计算函数
 
 // 设置矩阵大小
-void parell_size(int m);
+void parallel_size(int m);
 
 // 1. 线程数量一定（和核数一样）矩阵规模不断变化，甚至超过 cache 大小，接近内存大小
 void test1();
@@ -24,9 +24,11 @@ void test2();
 
 int main()
 {
+    freopen("output.txt", "w", stdout); // 将输出重定向到文件中
     // test1();
     test2();
 
+    fclose(stdout); // 关闭文件
     return 0;
 }
 
@@ -48,14 +50,14 @@ void serial(int m, float **&a, float **&b, float **&c)
     }
     end = omp_get_wtime(); // 记录串行计算结束时间
     // 打印矩阵大小、矩阵占用空间（以 GB 为单位）以及串行计算时间
-    // fprintf(stderr, "m = %d, matrix size: %0.6lf GB, serial matrix multiply time: %0.6lf\n",
-    //         m, (double)(m * m * sizeof(float) * 3) / (1024 * 1024 * 1024), end - start);
+    fprintf(stderr, "m = %d, matrix size: %0.6lf GB, serial matrix multiply time: %0.6lf\n",
+            m, (double)(m * m * sizeof(float) * 3) / (1024 * 1024 * 1024), end - start);
     printf("m = %d, matrix size: %0.6lf GB, serial matrix multiply time: %0.6lf\n",
            m, (double)(m * m * sizeof(float) * 3) / (1024 * 1024 * 1024), end - start);
 }
 
 // 进行矩阵乘法的并行实现
-void parell(int m, float **&a, float **&b, float **&c)
+void parallel(int m, float **&a, float **&b, float **&c)
 {
     double start, end;
     int i, j, k;
@@ -87,11 +89,13 @@ void parell(int m, float **&a, float **&b, float **&c)
     // 获取结束时间
     end = omp_get_wtime();
 
-    printf("m = %d, matrix size: %0.6lf GB, parell matrix multiply time: %0.6lf\n",
+    fprintf(stderr, "m = %d, matrix size: %0.6lf GB, parallel matrix multiply time: %0.6lf\n",
+            m, (double)(m * m * sizeof(float) * 3) / (1024 * 1024 * 1024), end - start);
+    printf("m = %d, matrix size: %0.6lf GB, parallel matrix multiply time: %0.6lf\n",
            m, (double)(m * m * sizeof(float) * 3) / (1024 * 1024 * 1024), end - start);
 }
 
-void parell_size(int m)
+void parallel_size(int m)
 {
     float **a = new float *[m];
     float **b = new float *[m];
@@ -117,7 +121,7 @@ void parell_size(int m)
     }
 
     serial(m, a, b, c);
-    parell(m, a, b, c);
+    parallel(m, a, b, c);
 
     for (int i = 0; i < m; i++)
     {
@@ -138,11 +142,11 @@ void test1()
     printf("Thread_pnum = %d\n", pnum); // 打印处理器核心数
     omp_set_num_threads(pnum);          // 设置线程数为处理器核心数
 
-    // parell_size(256);
-    // parell_size(1024);
-    // parell_size(4096);
-    parell_size(16384);
-    parell_size(65536);
+    // parallel_size(256);
+    // parallel_size(1024);
+    // parallel_size(4096);
+    parallel_size(16384);
+    parallel_size(65536);
 }
 
 void test2()
@@ -181,7 +185,7 @@ void test2()
     {
         printf("Thread_num = %d\n", i);
         omp_set_num_threads(i);
-        parell(m, a, b, c);
+        parallel(m, a, b, c);
     }
 
     for (int i = 0; i < m; i++)

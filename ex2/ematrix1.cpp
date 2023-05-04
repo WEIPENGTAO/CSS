@@ -13,12 +13,12 @@ float a[m][m]; // 矩阵A
 float b[m][m]; // 矩阵B
 float c[m][m]; // 矩阵C
 
-void serial();         // 串行计算函数
-void parell_dynamic(); // dynamic 调度并行计算函数
-void parell_static();  // static 调度并行计算函数
-void parell_guided();  // guided 调度并行计算函数
-void parell_runtime(); // runtime 调度并行计算函数
-void parell_auto();    // auto 调度并行计算函数
+void serial();           // 串行计算函数
+void parallel_dynamic(); // dynamic 调度并行计算函数
+void parallel_static();  // static 调度并行计算函数
+void parallel_guided();  // guided 调度并行计算函数
+void parallel_runtime(); // runtime 调度并行计算函数
+void parallel_auto();    // auto 调度并行计算函数
 
 int main()
 {
@@ -44,12 +44,12 @@ int main()
     omp_set_num_threads(pnum);          // 设置并行线程数为 4
     printf("Thread_pnum = %d\n", pnum); // 打印处理器核心数
 
-    serial();         // 调用串行计算函数
-    parell_dynamic(); // 调用 dynamic 调度并行计算函数
-    parell_static();  // 调用 static 调度并行计算函数
-    parell_guided();  // 调用 guided 调度并行计算函数
-    parell_runtime(); // 调用 runtime 调度并行计算函数
-    parell_auto();    // 调用 auto 调度并行计算函数
+    serial();           // 调用串行计算函数
+    parallel_dynamic(); // 调用 dynamic 调度并行计算函数
+    parallel_static();  // 调用 static 调度并行计算函数
+    parallel_guided();  // 调用 guided 调度并行计算函数
+    parallel_runtime(); // 调用 runtime 调度并行计算函数
+    parallel_auto();    // 调用 auto 调度并行计算函数
 
     // system("pause");
     return 0;
@@ -71,12 +71,12 @@ void serial()
             }
         }
     }
-    end = omp_get_wtime();                                                                           // 记录串行计算结束时间
+    end = omp_get_wtime();                                        // 记录串行计算结束时间
     printf("serial matrix multiply time: %0.6lf\n", end - start); // 打印串行计算时间
 }
 
 // 进行 dynamic 调度并行计算
-void parell_dynamic()
+void parallel_dynamic()
 {
     double start, end;
     int i, j, k;
@@ -107,11 +107,11 @@ void parell_dynamic()
     end = omp_get_wtime();
 
     // 打印 dynamic 并行化矩阵乘法的运行时间
-    printf("parell_dynamic matrix multiply time: %0.6lf\n", end - start);
+    printf("parallel_dynamic matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 static 调度并行计算
-void parell_static()
+void parallel_static()
 {
     double start, end;
     int i, j, k;
@@ -139,11 +139,11 @@ void parell_static()
     end = omp_get_wtime();
 
     // 打印 static 并行化矩阵乘法的运行时间
-    printf("parell_static matrix multiply time: %0.6lf\n", end - start);
+    printf("parallel_static matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 guided 调度并行计算
-void parell_guided()
+void parallel_guided()
 {
     double start, end;
     int i, j, k;
@@ -171,11 +171,11 @@ void parell_guided()
     end = omp_get_wtime();
 
     // 打印 guided 并行化矩阵乘法的运行时间
-    printf("parell_guided matrix multiply time: %0.6lf\n", end - start);
+    printf("parallel_guided matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 auto 调度并行计算
-void parell_auto()
+void parallel_auto()
 {
     double start, end;
     int i, j, k;
@@ -203,11 +203,11 @@ void parell_auto()
     end = omp_get_wtime();
 
     // 打印 auto 并行化矩阵乘法的运行时间
-    printf("parell_auto matrix multiply time: %0.6lf\n", end - start);
+    printf("parallel_auto matrix multiply time: %0.6lf\n", end - start);
 }
 
 // 进行 runtime 调度并行计算
-void parell_runtime()
+void parallel_runtime()
 {
     double start, end;
     int i, j, k;
@@ -235,5 +235,5 @@ void parell_runtime()
     end = omp_get_wtime();
 
     // 打印 runtime 并行化矩阵乘法的运行时间
-    printf("parell_runtime matrix multiply time: %0.6lf\n", end - start);
+    printf("parallel_runtime matrix multiply time: %0.6lf\n", end - start);
 }
