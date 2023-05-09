@@ -1,29 +1,31 @@
 # 多机环境下MPI并行编程
 
-**魏鹏涛 20120605**
-
 ## 实验过程
 
 ### 1. 安装MPI
 
 #### 1.1 安装 **MPI** 及其所需的依赖项
+
 ```bash
 yum install gcc gcc-c++ openmpi-devel
 ```
 
 #### 1.2 添加环境变量
+
 ```bash
 export PATH=/usr/lib64/openmpi/bin:$PATH
 export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
 ```
 
 并在```~/.bashrc```文件末尾添加
+
 ```bash
 export PATH=/usr/lib64/openmpi/bin:$PATH
 export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
 ```
 
 添加后```~/.bashrc```文件如下
+
 ```bash
 
 # .bashrc
@@ -48,11 +50,13 @@ source ~/.bashrc
 ```
 
 #### 1.3 测试是否安装成功
+
 ```bash
 mpicc --version
 ```
 
 测试结果如下所示说明安装成功
+
 ```bash
 gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)
 Copyright © 2015 Free Software Foundation, Inc.
@@ -63,6 +67,7 @@ Copyright © 2015 Free Software Foundation, Inc.
 ### 2. 创建多进程，输出进程号和进程数
 
 #### 2.1 编写程序如下
+
 ```c
 #include <stdio.h>
 #include <mpi.h>
@@ -84,6 +89,7 @@ int main(int argc, char **argv)
 ```
 
 #### 2.2 编译运行（单机）
+
 ```bash
 mpicc -o hello_mpi hello_mpi.c
 mpirun -np 4 hello_mpi # 普通用户
@@ -91,6 +97,7 @@ mpirun --allow-run-as-root -np 4 hello_mpi # root 用户
 ```
 
 结果如下
+
 ```bash
 [root@centos100 mpi]# mpirun --allow-run-as-root -np 4 hello_mpi
 Hello from process 2 of 4
@@ -102,23 +109,28 @@ Hello from process 1 of 4
 #### 2.3 多机运行
 
 首先在当前工作目录创建```hostfile```文件，内容如下
+
 ```bash
 centos100
 centos101
 centos102
 ```
+
 关闭防火墙
-```
+
+```bash
 systemctl stop firewalld
 ```
 
 运行
+
 ```bash
 mpirun -np 3 -hostfile hostfile ./hello_mpi # 普通用户
 mpirun --allow-run-as-root -np 3 -hostfile hostfile ./hello_mpi # root 用户
 ```
 
 结果如下
+
 ```bash
 [root@centos100 mpi]# mpirun --allow-run-as-root -np 3 -hostfile hostfile ./hello_mpi
 Hello from process 0 of 3
@@ -183,6 +195,7 @@ int main(int argc, char **argv)
 ```
 
 运行结果
+
 ```bash
 [root@centos100 mpi]# mpirun --allow-run-as-root -np 3 vector_mpi
 The dot product of x and y is 13494000500.00
@@ -278,6 +291,7 @@ int main(int argc, char **argv)
 ```
 
 结果如下
+
 ```bash
 [root@centos100 mpi]# mpirun --allow-run-as-root -np 3 ./matrix_mpi
 Time: 0.139863 seconds
