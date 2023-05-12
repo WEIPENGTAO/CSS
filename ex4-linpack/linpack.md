@@ -1,5 +1,7 @@
 # Linpack性能测试
 
+**20120605 魏鹏涛**
+
 注：本次实验使用了三台centos7虚拟机，每台虚拟机都分配了一个实际物理核心、两个虚拟逻辑核心。
 
 ## 1、实验目的
@@ -97,7 +99,7 @@ ALIGN  : 8 double precision words
 cd /root/hpl-2.3/bin/Linux_PII_FBLAS
 vim nodes
 vim HPL.dat
-mpirun --allow-run-as-root -np 4 --machinefile nodes --mca btl_tcp_if_include ens33 ./xhpl > output.txt
+mpirun --allow-run-as-root -np 4 --machinefile nodes --mca btl_tcp_if_include ens33 ./xhpl > data.txt
 ```
 
 在HPL测试中，使用的参数选择与测试的结果有很大的关系。HPL中参数的设定是通过从一个配置文件HPL.dat中读取的，所以在测试前要改写HPL.dat文件，设置需要使用的各种参数，然后再开始运行测试程序。配置文件```HPL.dat```内容的结构如下：
@@ -187,10 +189,28 @@ HPL_pdgesv() end time   Thu May 11 23:23:13 2023
 ||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=   2.60744810e-03 ...... PASSED
 ```
 
-全部结果已整理成```data.xlsx```文件，8组参数，每组得到18个测试结果。原始输出文件见```output.txt```。
+全部结果已整理成```data.xlsx```文件，8组参数，每组得到18个测试结果。原始输出文件见```data.txt```。
 
 以下是各参数组合得到的平均测试结果，可以看出，在```N=2048,NB=80,P=2,Q=2```时有最优秀的性能，每秒钟可以执行的浮点运算次数最高。
 
-![平均性能表格](.\result\avg_gflops.png)
+![平均性能表格](./result/data/data.png)
 
 本次实验主要分析的是参数调优，可以通过调整 ```HPL.dat``` 测试中的参数配置，如网格分块的维度（P）和每个分块内的处理器数量（Q），进行测试，从而找到最佳的参数组合。
+
+### 2.3、性能测试
+
+#### 2.3.1、线程性能测试
+
+以下为```N=2048,NB=64,P=2,Q=2```时不同线程数的平均测试结果，完整结果见```threads_data.xlsx```
+
+![不同线程数测试结果](./result/thread/threads.png)
+
+#### 2.3.2、矩阵规模测试
+
+以下为```4线程,NB=64,P=2,Q=2```时不同规模的平均测试结果，完整结果见```size_data.xlsx```
+
+![不同规模测试结果](./result/size/size.png)
+
+#### 2.3.2、分块测试
+
+分块测试见2.2的测试结果
